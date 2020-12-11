@@ -2,7 +2,7 @@
 An analog clock card for Home Assistant Lovelace. Colors are fully customizable, weekday names and date formats are localizable.
 
 
-![Analog clock](https://github.com/tomasrudh/analogclock/blob/main/Images/AnalogClock.png?raw=true)
+![Analog clock](https://github.com/tomasrudh/analogclock/blob/main/Images/AnalogClock.png2?raw=true)
 
 | Name | Type | Default | Description
 | --- | --- | --- | --- |
