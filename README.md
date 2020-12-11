@@ -36,3 +36,4 @@ An analog clock card for Home Assistant Lovelace. Colors are fully customizable,
   color_FaceDigits: "#a83832"
   color_Ticks: "Silver"
 ```
+<a href="https://www.buymeacoffee.com/rudhan" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="41" width="174"></a>
