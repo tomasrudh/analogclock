@@ -1,8 +1,9 @@
+[![GitHub Release][releases-shield]][releases]
 [![hacs_badge](https://img.shields.io/badge/HACS-Default-orange.svg)](https://github.com/custom-components/hacs)
 # Lovelace Analog Clock
 An analog clock card for Home Assistant Lovelace. Colors are fully customizable, weekday names and date formats are localizable.
 
-[![GitHub Release][releases-shield]][releases]
+
 ![Analog clock2](https://github.com/tomasrudh/analogclock/blob/main/Images/AnalogClock2.png?raw=true)
 
 | Name | Type | Default | Description
