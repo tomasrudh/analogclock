@@ -145,7 +145,7 @@ class AnalogClock extends HTMLElement {
       function drawWeeknumber(ctx, now, location, radius, color) {
         ctx.font = Math.round(radius / 7) + 'px Sans-Serif';
         ctx.fillStyle = color
-        var week = 'v. ' + weekNumber();
+        var week = weekNumber();
         ctx.fillText(week, radius * -0.5, 0);
         ctx.stroke();
       }
