@@ -2,22 +2,6 @@ class AnalogClock extends HTMLElement {
   set hass(hass) {
     if (!this.content) {
       var config = this.config;
-      // hide_SecondHand      (false)
-      // hide_WeekNumber      (false)
-      // hide_WeekDay         (false)
-      // hide_Date            (false)
-      // hide_FaceDigits      (false)
-      // hide_DigitalTime     (false)
-      // locale               (HA default)  (en-US)
-      // diameter             (Automatic)   (px)
-      // color_Background     (primary background color)
-      // color_Ticks          (Silver)
-      // color_FaceDigits     (Silver)
-      // color_DigitalTime    (#CCCCCC)
-      // color_HourHand       (#CCCCCC)
-      // color_MinuteHand     (#EEEEEE)
-      // color_SecondHand     (Silver)
-      // color_Text           (Silver)
       var color_Background = (config.color_Background) ? config.color_Background : getComputedStyle(document.documentElement).getPropertyValue('--primary-background-color');
       var color_Ticks = (config.color_Ticks) ? config.color_Ticks : 'Silver';
       var color_FaceDigits = (config.color_FaceDigits) ? config.color_FaceDigits : 'Silver';
@@ -28,6 +12,9 @@ class AnalogClock extends HTMLElement {
       var color_SecondHand = (config.color_SecondHand) ? config.color_SecondHand : 'Silver';
       var color_Time = (config.color_Time) ? config.color_Time : 'Silver';
       var color_Text = (config.color_Text) ? config.color_Text : 'Silver';
+      var timezone = (config.timezone) ? config.timezone : Intl.DateTimeFormat().resolvedOptions().timeZone;
+      var showtimezone = (config.showtimezone) ? config.showtimezone : false;
+
       const card = document.createElement('ha-card');
       this.content = document.createElement('div');
       this.content.style.display = "flex";
@@ -45,6 +32,7 @@ class AnalogClock extends HTMLElement {
       ctx.textBaseline = 'middle';
       var radius = (canvas.width < canvas.height) ? canvas.width / 2.1 : canvas.height / 2.1;
       ctx.translate(canvas.width / 2, canvas.height / 2);
+
       drawClock();
       setInterval(drawClock, 1000);
 
@@ -57,9 +45,15 @@ class AnalogClock extends HTMLElement {
         if (!config.hide_Date) { drawDate(ctx, now, locale, radius, color_Text) };
         if (!config.hide_WeekDay) { drawWeekday(ctx, now, locale, radius, color_Text) };
         if (!config.hide_WeekNumber) { drawWeeknumber(ctx, now, locale, radius, color_Text) };
-        if (!config.hide_DigitalTime) { drawTime(ctx, now, locale, radius, color_DigitalTime) };
-        drawHand(ctx, (now.getHours() + now.getMinutes() / 60) * 30, radius * 0.5, radius / 20, color_HourHand);
-        drawHand(ctx, (now.getMinutes() + now.getSeconds() / 60) * 6, radius * 0.8, radius / 20, color_MinuteHand);
+        if (!config.hide_DigitalTime) { drawTime(ctx, now, locale, radius, color_DigitalTime, timezone) };
+        var options = { hour: '2-digit', hour12: false };
+        if(config.timezone) { options["timeZone"] = timezone; }
+        var hour = now.toLocaleTimeString("sv-SE", options);
+        options = { minute: '2-digit', hour12: false };
+        if(config.timezone) { options["timeZone"] = timezone; }
+        var min = now.toLocaleTimeString("sv-SE", options);
+        drawHand(ctx, (Number(hour) + Number(min) / 60) * 30, radius * 0.5, radius / 20, color_HourHand);
+        drawHand(ctx, (Number(min) + now.getSeconds() / 60) * 6, radius * 0.8, radius / 20, color_MinuteHand);
         if (!config.hide_SecondHand) { drawHand(ctx, (now.getSeconds()) * 6, radius * 0.8, 0, color_SecondHand) };
 
       }
@@ -127,22 +121,26 @@ class AnalogClock extends HTMLElement {
         ctx.stroke();
       }
 
-      function drawDate(ctx, now, location, radius, color) {
+      function drawDate(ctx, now, locale, radius, color) {
         ctx.font = Math.round(radius / 7) + 'px Sans-Serif';
         ctx.fillStyle = color
-        ctx.fillText(now.toLocaleDateString(location), 0, radius * 0.5);
+        ctx.fillText(now.toLocaleDateString(locale), 0, radius * 0.5);
         ctx.stroke();
       }
 
-      function drawWeekday(ctx, now, location, radius, color) {
+      function drawWeekday(ctx, now, locale, radius, color) {
         ctx.font = Math.round(radius / 7) + 'px Sans-Serif';
         ctx.fillStyle = color
-        var options = { weekday: 'long' };
-        ctx.fillText(now.toLocaleDateString(location, options), 0, radius * 0.3);
+        if(config.showtimezone) {
+          ctx.fillText(timezone, 0, radius * 0.3);
+        } else {
+          var options = { weekday: 'long' };
+          ctx.fillText(now.toLocaleDateString(locale, options), 0, radius * 0.3);
+        }
         ctx.stroke();
       }
 
-      function drawWeeknumber(ctx, now, location, radius, color) {
+      function drawWeeknumber(ctx, now, locale, radius, color) {
         ctx.font = Math.round(radius / 7) + 'px Sans-Serif';
         ctx.fillStyle = color
         var week = weekNumber();
@@ -150,8 +148,10 @@ class AnalogClock extends HTMLElement {
         ctx.stroke();
       }
 
-      function drawTime(ctx, now, location, radius, color) {
-        var timeString = now.toLocaleTimeString(location, { hour: '2-digit', minute: '2-digit' });
+      function drawTime(ctx, now, locale, radius, color, timezone) {
+        var options = { hour: '2-digit', minute: '2-digit' };
+        if(config.timezone) { options["timeZone"] = timezone };
+        var timeString = now.toLocaleTimeString(locale, options);
         if (timeString.length > 5) {
           ctx.font = Math.round(radius / 5) + 'px Sans-Serif';
         } else {

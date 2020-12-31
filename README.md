@@ -8,9 +8,11 @@ An analog clock card for Home Assistant Lovelace. Colors are fully customizable,
 | Name | Type | Default | Description
 | --- | --- | --- | --- |
 | locale | String | HA setting | Locale for date and week day |
+| timezone | String | Browser setting | Time zone, for example Europe/Stockholm |
+| showtimezone | Boolean | false | If true, show time zone instead of week day |
 | diameter | Integer | Automatic | Diameter of the clock |
 | hide_SecondHand | Boolean | false | If true, the second hand is hidden |
-| hide_WeekNumber | Boolean | false | If true, the week number is hidden |
+| hide_WeekNumber | Boolean | true | If true, the week number is hidden NOTE: default has changed to true |
 | hide_WeekDay | Boolean | false | If true, the week day is hidden |
 | hide_Date | Boolean | false | If true, the date is hidden |
 | hide_FaceDigits | Boolean | false | If true, the hour numbers are hidden |
