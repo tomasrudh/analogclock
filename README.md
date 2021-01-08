@@ -9,22 +9,25 @@ An analog clock card for Home Assistant Lovelace. Colors are fully customizable,
 | --- | --- | --- | --- |
 | locale | String | HA setting | Locale for date and week day |
 | timezone | String | Browser setting | Time zone, for example Europe/Stockholm |
-| showtimezone | Boolean | false | If true, show time zone instead of week day |
+| show_timezone | Boolean | false | If true, show time zone instead of week day |
 | diameter | Integer | Automatic | Diameter of the clock |
-| hide_SecondHand | Boolean | false | If true, the second hand is hidden |
-| hide_WeekNumber | Boolean | true | If true, the week number is hidden NOTE: default has changed to true |
-| hide_WeekDay | Boolean | false | If true, the week day is hidden |
-| hide_Date | Boolean | false | If true, the date is hidden |
-| hide_FaceDigits | Boolean | false | If true, the hour numbers are hidden |
-| hide_DigitalTime | Boolean | false | If true, the digital time hidden |
-| color_Background | String | primary background color | Background color of the clock |
-| color_Ticks | String | Silver | Color of the border ticks |
-| color_FaceDigits | String | Silver | Color of the borde digits |
-| color_DigitalTime | String | #CCCCCC | Color of the digital time |
-| color_HourHand | String | #CCCCCC | Color of the hour hand |
-| color_MinuteHand | String | #EEEEEE | Color of the minute hand |
-| color_SecondHand | String | Silver | Color of the second hand |
-| color_Text | String | Silver | Color of texts |
+| hide_secondhand | Boolean | false | If true, the second hand is hidden |
+| hide_weeknumber | Boolean | true | If true, the week number is hidden NOTE: default has changed to true |
+| hide_weekday | Boolean | false | If true, the week day is hidden |
+| hide_date | Boolean | false | If true, the date is hidden |
+| hide_facedigits | Boolean | false | If true, the hour numbers are hidden |
+| hide_digitaltime | Boolean | false | If true, the digital time hidden |
+| color_background | String | primary background color | Background color of the clock |
+| color_ticks | String | Silver | Color of the border ticks |
+| color_facedigits | String | Silver | Color of the borde digits |
+| color_digitaltime | String | #CCCCCC | Color of the digital time |
+| color_hourhand | String | #CCCCCC | Color of the hour hand |
+| color_minutehand | String | #EEEEEE | Color of the minute hand |
+| color_secondhand | String | Silver | Color of the second hand |
+| color_text | String | Silver | Color of texts |
+| style_hourhand | Integer | 1 | Style for the hour hand |
+| style_minutehand | Integer | 1 | Style for the minute hand |
+| style_secondhand | Integer | 3 | Style for the second hand |
 
 ![Analog clock3](https://github.com/tomasrudh/analogclock/blob/main/Images/AnalogClock3.png?raw=true)
 
@@ -39,4 +42,16 @@ An analog clock card for Home Assistant Lovelace. Colors are fully customizable,
   color_FaceDigits: "#a83832"
   color_Ticks: "Silver"
 ```
+Style 1:
+![Style 1](https://github.com/tomasrudh/analogclock/blob/main/Images/Style-1.png?raw=true)
+Style 2:
+![Style 2](https://github.com/tomasrudh/analogclock/blob/main/Images/Style-2.png?raw=true)
+Style 3:
+![Style 3](https://github.com/tomasrudh/analogclock/blob/main/Images/Style-3.png?raw=true)
+Style 4:
+![Style 4](https://github.com/tomasrudh/analogclock/blob/main/Images/Style-4.png?raw=true)
+Style 5:
+![Style 5](https://github.com/tomasrudh/analogclock/blob/main/Images/Style-5.png?raw=true)
+Style 6:
+![Style 6](https://github.com/tomasrudh/analogclock/blob/main/Images/Style-6.png?raw=true)
 <a href="https://www.buymeacoffee.com/rudhan" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="41" width="174"></a>
