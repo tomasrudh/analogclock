@@ -29,6 +29,12 @@ An analog clock card for Home Assistant Lovelace. Colors are fully customizable,
 | style_minutehand | Integer | 1 | Style for the minute hand |
 | style_secondhand | Integer | 3 | Style for the second hand |
 
+| Name | Type | Description
+| --- | --- | --- |
+| themes | | Has subvalues with timed settings |
+| - time | time interval | A time interval in the format HHMM-HHMM, there can be multiple 'time' sections
+| color_background | String | Background color of the clock |
+
 ![Analog clock3](https://github.com/tomasrudh/analogclock/blob/main/Images/AnalogClock3.png?raw=true)
 
 ```
@@ -41,6 +47,9 @@ An analog clock card for Home Assistant Lovelace. Colors are fully customizable,
   color_DigitalTime: "#CCCCCC"
   color_FaceDigits: "#a83832"
   color_Ticks: "Silver"
+  themes:
+  - time: 23:00-08:00
+    color_background: maroon
 ```
 Style 1:
 ![Style 1](https://github.com/tomasrudh/analogclock/blob/main/Images/Style-1.png?raw=true)

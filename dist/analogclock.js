@@ -3,10 +3,6 @@ class AnalogClock extends HTMLElement {
     if (!this.content) {
       var config = this.config;
 
-      var color_Background = getComputedStyle(document.documentElement).getPropertyValue('--primary-background-color');
-      if (config.color_Background) color_Background = config.color_Background;
-      if (config.color_background) color_Background = config.color_background;
-
       var color_Ticks = 'Silver';
       if (config.color_Ticks) color_Ticks = config.color_Ticks;
       if (config.color_ticks) color_Ticks = config.color_ticks;
@@ -102,6 +98,7 @@ class AnalogClock extends HTMLElement {
       ctx.textBaseline = 'middle';
       var radius = (canvas.width < canvas.height) ? canvas.width / 2.1 : canvas.height / 2.1;
       ctx.translate(canvas.width / 2, canvas.height / 2);
+      var themes = config.themes;
 
       drawClock();
       if (this.hide_SecondHand) {
@@ -111,8 +108,37 @@ class AnalogClock extends HTMLElement {
       }
 
       function drawClock() {
+        var color_Background = getComputedStyle(document.documentElement).getPropertyValue('--primary-background-color');
+        if (config.color_Background) color_Background = config.color_Background;
+        if (config.color_background) color_Background = config.color_background;
         var now = new Date();
         if (demo) now = new Date(2020, 12, 10, 10, 8, 20);
+        if (themes) {
+          try {
+            for (var i = 0; i < themes.length; i++) {
+              if (themes[i].time) {
+                var startTime = new Date();
+                var endTime = new Date();
+                startTime.setHours((themes[i].time.split('-')[0]).split(':')[0]);
+                startTime.setMinutes((themes[i].time.split('-')[0]).split(':')[1]);
+                startTime.setSeconds(0);
+                endTime.setHours((themes[i].time.split('-')[1]).split(':')[0]);
+                endTime.setMinutes((themes[i].time.split('-')[1]).split(':')[1]);
+                endTime.setSeconds(0);
+              }
+              if (endTime > startTime) {
+                if (now > startTime && now < endTime) {
+                  if (themes[i].color_background) { color_Background = themes[i].color_background };
+                }
+              } else {
+                if (now > startTime || now < endTime) {
+                  if (themes[i].color_background) { color_Background = themes[i].color_background };
+                }
+              }
+            }
+          } catch (err) {
+          }
+        }
         drawFace(ctx, radius, color_Background);
         drawTicks(ctx, radius, color_Ticks);
         if (!hide_FaceDigits) { drawFaceDigits(ctx, radius, color_FaceDigits) };
