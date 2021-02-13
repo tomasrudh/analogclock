@@ -2,6 +2,16 @@
 # Lovelace Analog Clock
 An analog clock card for Home Assistant Lovelace. Colors are fully customizable, weekday names and date formats are localizable.
 
+In addition to the js file is moment.js needed, but only if you plan to use dateformat or timeformat. To install moment.js add these lines in the section 'resources' in ui-lovelace.yaml:
+```
+  - url: https://unpkg.com/moment@2.29.1/min/moment-with-locales.js
+    type: module
+```
+
+If you use the dateformat or timeformat and the hands are not shown, that probably means moment.js is not properly loaded.
+
+For a list of available options for dateformat and timeformat, see this:
+https://momentjs.com/docs/#/displaying/format/
 
 ![Analog clock2](https://github.com/tomasrudh/analogclock/blob/main/Images/AnalogClock2.png?raw=true)
 
@@ -10,6 +20,7 @@ An analog clock card for Home Assistant Lovelace. Colors are fully customizable,
 | locale | String | HA setting | Locale for date and week day |
 | timezone | String | Browser setting | Time zone, for example Europe/Stockholm |
 | show_timezone | Boolean | false | If true, show time zone instead of week day |
+| timezonedisplayname | String | | Name of the time zone to be shown |
 | diameter | Integer | Automatic | Diameter of the clock |
 | hide_secondhand | Boolean | false | If true, the second hand is hidden |
 | hide_weeknumber | Boolean | true | If true, the week number is hidden NOTE: default has changed to true |
@@ -19,6 +30,7 @@ An analog clock card for Home Assistant Lovelace. Colors are fully customizable,
 | hide_digitaltime | Boolean | false | If true, the digital time hidden |
 | color_background | String | primary background color | Background color of the clock |
 | color_ticks | String | Silver | Color of the border ticks |
+| hide_minorticks | Boolean | false | Hides the minor ticks |
 | color_facedigits | String | Silver | Color of the borde digits |
 | color_digitaltime | String | #CCCCCC | Color of the digital time |
 | color_hourhand | String | #CCCCCC | Color of the hour hand |
@@ -28,6 +40,10 @@ An analog clock card for Home Assistant Lovelace. Colors are fully customizable,
 | style_hourhand | Integer | 1 | Style for the hour hand |
 | style_minutehand | Integer | 1 | Style for the minute hand |
 | style_secondhand | Integer | 3 | Style for the second hand |
+| dateformat | String | HA setting | Format for the date (Require moment.js) |
+| timeformat | String | HA setting | Format for the time (Require moment.js) |
+
+Themes are settings that are applied during a time interval. Any setting except timezone and diameter can be set in themes. There can be multiple 'time' sections.
 
 | Name | Type | Description
 | --- | --- | --- |
@@ -51,6 +67,21 @@ An analog clock card for Home Assistant Lovelace. Colors are fully customizable,
   - time: 23:00-08:00
     color_background: maroon
 ```
+![Analog clock4](https://github.com/tomasrudh/analogclock/blob/main/Images/AnalogClock4.png?raw=true)
+```
+- type: "custom:analog-clock"
+  hide_SecondHand: true
+  color_HourHand: "#326ba8"
+  color_MinuteHand: "#3273a8"
+  color_DigitalTime: "#CCCCCC"
+  color_FaceDigits: "#a83832"
+  hide_minorticks: true
+  timezone: America/Fortaleza
+  timezonedisplayname: "UTC-3"
+  dateformat: "MMM Do YYYY"
+  timeformat: "hh mm"
+```
+
 Style 1:
 ![Style 1](https://github.com/tomasrudh/analogclock/blob/main/Images/Style-1.png?raw=true)
 Style 2:
