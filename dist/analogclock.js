@@ -30,11 +30,16 @@ class AnalogClock extends HTMLElement {
       function drawClock() {
         getConfig();
         var now = new Date();
-        var options = '';
+        //var options = { timeZone: 'Europe/London', minute: 'numeric' },
         if (config.timezone) { options = { timeZone: timezone } };
-        var timestring = now.toLocaleString('sv-SE', options);
-        now = new Date(timestring);
-        if (demo) now = new Date('2021-01-10 10:08:20');
+        var year = now.toLocaleString('sv-SE', { year: 'numeric', timeZone: timezone });
+        var month = now.toLocaleString('sv-SE', { month: 'numeric', timeZone: timezone });
+        var day = now.toLocaleString('sv-SE', { day: 'numeric', timeZone: timezone });
+        var hour = now.toLocaleString('sv-SE', { hour: 'numeric', timeZone: timezone });
+        var minute = now.toLocaleString('sv-SE', { minute: 'numeric', timeZone: timezone });
+        var second = now.toLocaleString('sv-SE', { second: 'numeric', timeZone: timezone });
+        now = new Date(year, month, day, hour, minute, second);
+        if (demo) now = new Date(2021, 0, 10, 10, 8, 20);
         drawFace(ctx, radius, color_Background);
         drawTicks(ctx, radius, color_Ticks);
         if (!hide_FaceDigits) { drawFaceDigits(ctx, radius, color_FaceDigits) };
@@ -43,12 +48,12 @@ class AnalogClock extends HTMLElement {
         if (!hide_WeekNumber) { drawWeeknumber(ctx, now, locale, radius, color_Text) };
         if (!hide_DigitalTime) { drawTime(ctx, now, locale, radius, color_DigitalTime, timezone) };
         var options = { hour: '2-digit', hour12: false };
-        var hour = now.toLocaleTimeString("sv-SE", options);
+        hour = now.toLocaleTimeString("sv-SE", options);
         options = { minute: '2-digit', hour12: false };
-        var min = now.toLocaleTimeString("sv-SE", options);
+        minute = now.toLocaleTimeString("sv-SE", options);
         // drawHandX(ctx, ang, length, width, color, style)  ang in degrees
-        drawHand(ctx, (Number(hour) + Number(min) / 60) * 30, radius * 0.5, radius / 20, color_HourHand, style_HourHand);
-        drawHand(ctx, (Number(min) + now.getSeconds() / 60) * 6, radius * 0.8, radius / 20, color_MinuteHand, style_MinuteHand);
+        drawHand(ctx, (Number(hour) + Number(minute) / 60) * 30, radius * 0.5, radius / 20, color_HourHand, style_HourHand);
+        drawHand(ctx, (Number(minute) + now.getSeconds() / 60) * 6, radius * 0.8, radius / 20, color_MinuteHand, style_MinuteHand);
         if (!hide_SecondHand) { drawHand(ctx, (now.getSeconds()) * 6, radius * 0.8, 0, color_SecondHand, style_SecondHand) };
       }
 
