@@ -38,8 +38,8 @@ class AnalogClock extends HTMLElement {
         var hour = now.toLocaleString('sv-SE', { hour: 'numeric', timeZone: timezone });
         var minute = now.toLocaleString('sv-SE', { minute: 'numeric', timeZone: timezone });
         var second = now.toLocaleString('sv-SE', { second: 'numeric', timeZone: timezone });
-        now = new Date(year, month, day, hour, minute, second);
-        if (demo) now = new Date(2021, 0, 10, 10, 8, 20);
+        now = new Date(year, month - 1, day, hour, minute, second);
+        if (demo) now = new Date(2021, 1, 10, 10, 8, 20);
         drawFace(ctx, radius, color_Background);
         drawTicks(ctx, radius, color_Ticks);
         if (!hide_FaceDigits) { drawFaceDigits(ctx, radius, color_FaceDigits) };
