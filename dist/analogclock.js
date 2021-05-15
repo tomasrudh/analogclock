@@ -28,33 +28,65 @@ class AnalogClock extends HTMLElement {
       }
 
       function drawClock() {
-        getConfig();
-        var now = new Date();
-        //var options = { timeZone: 'Europe/London', minute: 'numeric' },
-        if (config.timezone) { options = { timeZone: timezone } };
-        var year = now.toLocaleString('sv-SE', { year: 'numeric', timeZone: timezone });
-        var month = now.toLocaleString('sv-SE', { month: 'numeric', timeZone: timezone });
-        var day = now.toLocaleString('sv-SE', { day: 'numeric', timeZone: timezone });
-        var hour = now.toLocaleString('sv-SE', { hour: 'numeric', timeZone: timezone });
-        var minute = now.toLocaleString('sv-SE', { minute: 'numeric', timeZone: timezone });
-        var second = now.toLocaleString('sv-SE', { second: 'numeric', timeZone: timezone });
-        now = new Date(year, month - 1, day, hour, minute, second);
-        if (demo) now = new Date(2021, 1, 10, 10, 8, 20);
-        drawFace(ctx, radius, color_Background);
-        drawTicks(ctx, radius, color_Ticks);
-        if (!hide_FaceDigits) { drawFaceDigits(ctx, radius, color_FaceDigits) };
-        if (!hide_Date) { drawDate(ctx, now, locale, radius, color_Text) };
-        if (!hide_WeekDay) { drawWeekday(ctx, now, locale, radius, color_Text) };
-        if (!hide_WeekNumber) { drawWeeknumber(ctx, now, locale, radius, color_Text) };
-        if (!hide_DigitalTime) { drawTime(ctx, now, locale, radius, color_DigitalTime, timezone) };
-        var options = { hour: '2-digit', hour12: false };
-        hour = now.toLocaleTimeString("sv-SE", options);
-        options = { minute: '2-digit', hour12: false };
-        minute = now.toLocaleTimeString("sv-SE", options);
-        // drawHandX(ctx, ang, length, width, color, style)  ang in degrees
-        drawHand(ctx, (Number(hour) + Number(minute) / 60) * 30, radius * 0.5, radius / 20, color_HourHand, style_HourHand);
-        drawHand(ctx, (Number(minute) + now.getSeconds() / 60) * 6, radius * 0.8, radius / 20, color_MinuteHand, style_MinuteHand);
-        if (!hide_SecondHand) { drawHand(ctx, (now.getSeconds()) * 6, radius * 0.8, 0, color_SecondHand, style_SecondHand) };
+        try {
+          getConfig();
+          var now = new Date();
+          //var options = { timeZone: 'Europe/London', minute: 'numeric' },
+          if (config.timezone) { options = { timeZone: timezone } };
+          var year = now.toLocaleString('sv-SE', { year: 'numeric', timeZone: timezone });
+          var month = now.toLocaleString('sv-SE', { month: 'numeric', timeZone: timezone });
+          var day = now.toLocaleString('sv-SE', { day: 'numeric', timeZone: timezone });
+          var hour = now.toLocaleString('sv-SE', { hour: 'numeric', timeZone: timezone });
+          var minute = now.toLocaleString('sv-SE', { minute: 'numeric', timeZone: timezone });
+          var second = now.toLocaleString('sv-SE', { second: 'numeric', timeZone: timezone });
+          now = new Date(year, month - 1, day, hour, minute, second);
+          if (demo) now = new Date(2021, 1, 10, 10, 8, 20);
+          drawFace(ctx, radius, color_Background);
+          drawTicks(ctx, radius, color_Ticks);
+          if (!hide_FaceDigits) { drawFaceDigits(ctx, radius, color_FaceDigits) };
+          if (!hide_Date) { drawDate(ctx, now, locale, radius, color_Text) };
+          if (!hide_WeekDay) { drawWeekday(ctx, now, locale, radius, color_Text) };
+          if (!hide_WeekNumber) { drawWeeknumber(ctx, now, locale, radius, color_Text) };
+          if (!hide_DigitalTime) { drawTime(ctx, now, locale, radius, color_DigitalTime, timezone) };
+          var options = { hour: '2-digit', hour12: false };
+          hour = now.toLocaleTimeString("sv-SE", options);
+          options = { minute: '2-digit', hour12: false };
+          minute = now.toLocaleTimeString("sv-SE", options);
+          // drawHandX(ctx, ang, length, width, color, style)  ang in degrees
+          drawHand(ctx, (Number(hour) + Number(minute) / 60) * 30, radius * 0.5, radius / 20, color_HourHand, style_HourHand);
+          drawHand(ctx, (Number(minute) + now.getSeconds() / 60) * 6, radius * 0.8, radius / 20, color_MinuteHand, style_MinuteHand);
+          if (!hide_SecondHand) { drawHand(ctx, (now.getSeconds()) * 6, radius * 0.8, 0, color_SecondHand, style_SecondHand) };
+        }
+        catch (err) {
+          ctx.font = '20px Sans-Serif';
+          ctx.textAlign = "left";
+          ctx.fillStyle = 'red';
+          var message = err.message;
+          var words = message.split(' ');
+          var line = '';
+          var maxWidth = canvas.width - 20;
+          var lineHeight = 24;
+          //var x = maxWidth;
+          var x = maxWidth / 2;
+          var y = -60;
+
+          for (var n = 0; n < words.length; n++) {
+            var testLine = line + words[n] + ' ';
+            var metrics = ctx.measureText(testLine);
+            var testWidth = metrics.width;
+            if (testWidth > maxWidth && n > 0) {
+              ctx.fillText(line, -x, y);
+              line = words[n] + ' ';
+              y += lineHeight;
+            }
+            else {
+              line = testLine;
+            }
+          }
+          ctx.fillText(line, -x, y);
+          ctx.stroke();
+          ctx.textAlign = "center";
+        }
       }
 
       function drawFace(ctx, radius, color) {
