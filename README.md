@@ -16,7 +16,7 @@ You might have to add a character and remove it again, before the Save button be
 In addition to the js file is moment.js needed, but only if you plan to use dateformat or timeformat. To install moment.js add these lines in the section 'resources' in ui-lovelace.yaml:
 ```
   - url: https://unpkg.com/moment@2.29.1/min/moment-with-locales.js
-    type: module
+    type: js
 ```
 
 If you use the dateformat or timeformat and the hands are not shown, that probably means moment.js is not properly loaded.
