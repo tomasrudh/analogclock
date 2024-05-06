@@ -7,7 +7,7 @@ An analog clock card for Home Assistant Lovelace. Colors are fully customizable,
 
 Install using HACS, search for 'Analog Clock'.
 
-To add card in GUI mode, click +Add Card, scroll down to the bottom and press Manual. Delete the text already in the code panel and add this:
+To add the card in GUI mode, click +Add Card, scroll down to the bottom and press Manual. Delete the text already in the code panel and add this:
 ```
 type: "custom:analog-clock"
 ```
