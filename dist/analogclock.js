@@ -1,6 +1,8 @@
 class AnalogClock extends HTMLElement {
   set hass(hass) {
     if (!this.content) {
+      console.info(`%c  🕑 ANALOG-CLOCK 🕑  `, 'color: blue; font-weight: bold; background: black');
+
       var config = this.config;
       const card = document.createElement('ha-card');
       this.content = document.createElement('div');
@@ -15,21 +17,38 @@ class AnalogClock extends HTMLElement {
       this.appendChild(card);
       var canvas = this.content.children[0];
       var ctx = canvas.getContext("2d");
-      ctx.textAlign = "center";
-      ctx.textBaseline = 'middle';
       var radius = (canvas.width < canvas.height) ? canvas.width / 2.1 : canvas.height / 2.1;
-      ctx.translate(canvas.width / 2, canvas.height / 2);
 
+      var canvasHourEl = document.createElement('canvas');
+      var layerHourCtx = canvasHourEl.getContext('2d');
+      layerHourCtx.width = canvas.width;
+      layerHourCtx.height = canvas.height;
+      layerHourCtx.textAlign = "center";
+      layerHourCtx.textBaseline = 'middle';
+      layerHourCtx.translate(canvas.width / 2, canvas.height / 2);
+
+
+      var canvasMinSecEl = document.createElement('canvas');
+      var layerMinSecCtx = canvasMinSecEl.getContext('2d');
+      layerMinSecCtx.width = canvas.width;
+      layerMinSecCtx.height = canvas.height;
+      layerMinSecCtx.textAlign = "center";
+      layerMinSecCtx.textBaseline = 'middle';
+      layerMinSecCtx.translate(canvas.width / 2, canvas.height / 2);
+
+      var layerCachedForMinute = -1;
+      getConfig();
       drawClock();
       if (this.hide_SecondHand) {
         setInterval(drawClock, 10000);
       } else {
         setInterval(drawClock, 1000);
       }
+      // TODO how to know when/if config has changed?
+      setInterval(getConfig, 60000);
 
       function drawClock() {
         try {
-          getConfig();
           var now = new Date();
           //var options = { timeZone: 'Europe/London', minute: 'numeric' },
           if (config.timezone) { options = { timeZone: timezone } };
@@ -41,27 +60,37 @@ class AnalogClock extends HTMLElement {
           var second = now.toLocaleString('sv-SE', { second: 'numeric', timeZone: timezone });
           now = new Date(year, month - 1, day, hour, minute, second);
           if (demo) now = new Date(2021, 1, 10, 10, 8, 20);
-          drawFace(ctx, radius, color_Background);
-          drawTicks(ctx, radius, color_Ticks);
-          if (!hide_FaceDigits) { drawFaceDigits(ctx, radius, color_FaceDigits) };
-          if (!hide_Date) { drawDate(ctx, now, locale, radius, color_Text) };
-          if (!hide_WeekDay) { drawWeekday(ctx, now, locale, radius, color_Text) };
-          if (!hide_WeekNumber) { drawWeeknumber(ctx, now, locale, radius, color_Text) };
-          if (!hide_DigitalTime) { drawTime(ctx, now, locale, radius, color_DigitalTime, timezone) };
-          var options = { hour: '2-digit', hour12: false };
-          hour = now.toLocaleTimeString("sv-SE", options);
-          options = { minute: '2-digit', hour12: false };
-          minute = now.toLocaleTimeString("sv-SE", options);
-          // drawHandX(ctx, ang, length, width, color, style)  ang in degrees
-          drawHand(ctx, (Number(hour) + Number(minute) / 60) * 30, radius * 0.5, radius / 20, color_HourHand, style_HourHand);
-          drawHand(ctx, (Number(minute) + now.getSeconds() / 60) * 6, radius * 0.8, radius / 20, color_MinuteHand, style_MinuteHand);
-          if (!hide_SecondHand) { drawHand(ctx, (now.getSeconds()) * 6, radius * 0.8, 0, color_SecondHand, style_SecondHand) };
+          if (layerCachedForMinute != minute) {
+            layerCachedForMinute = minute;
+            layerHourCtx.clearRect(0 - layerHourCtx.width / 2, 0 - layerHourCtx.height / 2, layerHourCtx.width, layerHourCtx.height);
+            drawFace(layerHourCtx, radius, color_Background);
+            drawTicks(layerHourCtx, radius, color_Ticks);
+            if (!hide_FaceDigits) { drawFaceDigits(layerHourCtx, radius, color_FaceDigits) };
+            if (!hide_Date) { drawDate(layerHourCtx, now, locale, radius, color_Text) };
+            if (!hide_WeekDay) { drawWeekday(layerHourCtx, now, locale, radius, color_Text) };
+            if (!hide_WeekNumber) { drawWeeknumber(layerHourCtx, now, locale, radius, color_Text) };
+            if (!hide_DigitalTime) { drawTime(layerHourCtx, now, locale, radius, color_DigitalTime, timezone) };
+            var options = { hour: '2-digit', hour12: false };
+            hour = now.toLocaleTimeString("sv-SE", options);
+            options = { minute: '2-digit', hour12: false };
+            minute = now.toLocaleTimeString("sv-SE", options);
+            // drawHandX(ctx, ang, length, width, color, style)  ang in degrees
+            drawHand(layerHourCtx, (Number(hour) + Number(minute) / 60) * 30, radius * 0.5, radius / 20, color_HourHand, style_HourHand);
+          }
+
+          layerMinSecCtx.clearRect(0 - layerMinSecCtx.width / 2, 0 - layerMinSecCtx.height / 2, layerMinSecCtx.width, layerMinSecCtx.height);
+          drawHand(layerMinSecCtx, (Number(minute) + now.getSeconds() / 60) * 6, radius * 0.8, radius / 20, color_MinuteHand, style_MinuteHand);
+          if (!hide_SecondHand) { drawHand(layerMinSecCtx, (now.getSeconds()) * 6, radius * 0.8, 0, color_SecondHand, style_SecondHand) };
+          ctx.drawImage(canvasHourEl, 0 , 0, layerHourCtx.width, layerHourCtx.height);
+          ctx.drawImage(canvasMinSecEl, 0, 0, layerMinSecCtx.width, layerMinSecCtx.height);
         }
         catch (err) {
+          ctx.clearRect(0, 0, ctx.width, ctx.height);
           ctx.font = '20px Sans-Serif';
           ctx.textAlign = "left";
           ctx.fillStyle = 'red';
           var message = err.message;
+          console.error("ANALOG-CLOCK Error: " + message, err);
           var words = message.split(' ');
           var line = '';
           var maxWidth = canvas.width - 20;
