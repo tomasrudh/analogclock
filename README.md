@@ -3,6 +3,16 @@
 # Lovelace Analog Clock
 An analog clock card for Home Assistant Lovelace. Colors are fully customizable, weekday names and date formats are localizable.
 
+## Installation
+
+Install using HACS, search for 'Analog card'.
+
+To add card in GUI mode, click +Add Card, scroll down to the bottom and press Manual. Delete the text already in the code panel and add this:
+```
+type: "custom:analog-clock"
+```
+You might have to add a character and remove it again, before the Save button becomes active.
+
 In addition to the js file is moment.js needed, but only if you plan to use dateformat or timeformat. To install moment.js add these lines in the section 'resources' in ui-lovelace.yaml:
 ```
   - url: https://unpkg.com/moment@2.29.1/min/moment-with-locales.js
@@ -10,6 +20,8 @@ In addition to the js file is moment.js needed, but only if you plan to use date
 ```
 
 If you use the dateformat or timeformat and the hands are not shown, that probably means moment.js is not properly loaded.
+
+## Configuration
 
 For a list of available options for dateformat and timeformat, see this:
 https://momentjs.com/docs/#/displaying/format/
