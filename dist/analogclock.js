@@ -1,24 +1,49 @@
-class AnalogClock extends HTMLElement {
+class AnalogClock2 extends HTMLElement {
   set hass(hass) {
     if (!this.content) {
+      console.info(`%c ANALOG-CLOCK v2.0 `, 'color: white; font-weight: bold; background: black');
+
       var config = this.config;
       const card = document.createElement('ha-card');
       this.content = document.createElement('div');
       this.content.style.display = "flex";
       this.content.style.justifyContent = "center";
       this.content.style.padding = "5px";
-      //this.content.innerHTML = `<canvas width="300px" height="300px"></canvas>`;
+      //this.content.style.background = 'rgba(0, 0, 0, 0)';
       var canvasSize = (config.diameter) ? ` width="${config.diameter}px" height="${config.diameter}px"` : '';
       this.content.innerHTML = `<canvas${canvasSize}></canvas>`;
-      //this.content.innerHTML = `<canvas></canvas>`;
       card.appendChild(this.content);
       this.appendChild(card);
       var canvas = this.content.children[0];
+      canvas.background_transparent
       var ctx = canvas.getContext("2d");
-      ctx.textAlign = "center";
-      ctx.textBaseline = 'middle';
+      //ctx.textAlign = "center";
+      //ctx.textBaseline = 'middle';
       var radius = (canvas.width < canvas.height) ? canvas.width / 2.1 : canvas.height / 2.1;
-      ctx.translate(canvas.width / 2, canvas.height / 2);
+      //ctx.translate(canvas.width / 2, canvas.height / 2);
+
+      var canvasHourEl = document.createElement('canvas');
+      canvasHourEl.width = canvas.width
+      canvasHourEl.height = canvas.height
+      var layerHourCtx = canvasHourEl.getContext('2d');
+      layerHourCtx.width = canvas.width;
+      layerHourCtx.height = canvas.height;
+      layerHourCtx.textAlign = "center";
+      layerHourCtx.textBaseline = 'middle';
+      layerHourCtx.translate(canvas.width / 2, canvas.height / 2);
+
+      var canvasMinSecEl = document.createElement('canvas');
+      var layerMinSecCtx = canvasMinSecEl.getContext('2d');
+      canvasMinSecEl.width = canvas.width
+      canvasMinSecEl.height = canvas.height
+      layerMinSecCtx.width = canvas.width;
+      layerMinSecCtx.height = canvas.height;
+      layerMinSecCtx.textAlign = "center";
+      layerMinSecCtx.textBaseline = 'middle';
+      layerMinSecCtx.translate(canvas.width / 2, canvas.height / 2);
+
+      var layerCachedForMinute = -1;
+      getConfig();
 
       drawClock();
       if (this.hide_SecondHand) {
@@ -29,9 +54,7 @@ class AnalogClock extends HTMLElement {
 
       function drawClock() {
         try {
-          getConfig();
           var now = new Date();
-          //var options = { timeZone: 'Europe/London', minute: 'numeric' },
           if (config.timezone) { options = { timeZone: timezone } };
           var year = now.toLocaleString('sv-SE', { year: 'numeric', timeZone: timezone });
           var month = now.toLocaleString('sv-SE', { month: 'numeric', timeZone: timezone });
@@ -41,51 +64,35 @@ class AnalogClock extends HTMLElement {
           var second = now.toLocaleString('sv-SE', { second: 'numeric', timeZone: timezone });
           now = new Date(year, month - 1, day, hour, minute, second);
           if (demo) now = new Date(2021, 1, 10, 10, 8, 20);
-          drawFace(ctx, radius, color_Background);
-          drawTicks(ctx, radius, color_Ticks);
-          if (!hide_FaceDigits) { drawFaceDigits(ctx, radius, color_FaceDigits) };
-          if (!hide_Date) { drawDate(ctx, now, locale, radius, color_Text) };
-          if (!hide_WeekDay) { drawWeekday(ctx, now, locale, radius, color_Text) };
-          if (!hide_WeekNumber) { drawWeeknumber(ctx, now, locale, radius, color_Text) };
-          if (!hide_DigitalTime) { drawTime(ctx, now, locale, radius, color_DigitalTime, timezone) };
-          var options = { hour: '2-digit', hour12: false };
-          hour = now.toLocaleTimeString("sv-SE", options);
-          options = { minute: '2-digit', hour12: false };
+          var options = { minute: '2-digit', hour12: false };
           minute = now.toLocaleTimeString("sv-SE", options);
-          // drawHandX(ctx, ang, length, width, color, style)  ang in degrees
-          drawHand(ctx, (Number(hour) + Number(minute) / 60) * 30, radius * 0.5, radius / 20, color_HourHand, style_HourHand);
-          drawHand(ctx, (Number(minute) + now.getSeconds() / 60) * 6, radius * 0.8, radius / 20, color_MinuteHand, style_MinuteHand);
-          if (!hide_SecondHand) { drawHand(ctx, (now.getSeconds()) * 6, radius * 0.8, 0, color_SecondHand, style_SecondHand) };
+
+          if (layerCachedForMinute != minute) {
+            layerCachedForMinute = minute;
+            layerHourCtx.clearRect(0 - layerHourCtx.width / 2, 0 - layerHourCtx.height / 2, layerHourCtx.width, layerHourCtx.height);
+            drawFace(layerHourCtx, radius, color_Background);
+            drawTicks(layerHourCtx, radius, color_Ticks);
+            if (!hide_FaceDigits) { drawFaceDigits(layerHourCtx, radius, color_FaceDigits) };
+            if (!hide_Date) { drawDate(layerHourCtx, now, locale, radius, color_Text) };
+            if (!hide_WeekDay) { drawWeekday(layerHourCtx, now, locale, radius, color_Text) };
+            if (!hide_WeekNumber) { drawWeeknumber(layerHourCtx, now, locale, radius, color_Text) };
+            if (!hide_DigitalTime) { drawTime(layerHourCtx, now, locale, radius, color_DigitalTime, timezone) };
+            options = { hour: '2-digit', hour12: false };
+            hour = now.toLocaleTimeString("sv-SE", options);
+            options = { minute: '2-digit', hour12: false };
+            minute = now.toLocaleTimeString("sv-SE", options);
+            drawHand(layerHourCtx, (Number(hour) + Number(minute) / 60) * 30, radius * 0.5, radius / 20, color_HourHand, style_HourHand);
+          }
+
+          ctx.clearRect(0, 0, canvas.width * 2, canvas.height * 2);
+          layerMinSecCtx.clearRect(0 - layerMinSecCtx.width / 2, 0 - layerMinSecCtx.height / 2, layerMinSecCtx.width, layerMinSecCtx.height);
+          drawHand(layerMinSecCtx, (Number(minute) + now.getSeconds() / 60) * 6, radius * 0.8, radius / 20, color_MinuteHand, style_MinuteHand);
+          if (!hide_SecondHand) { drawHand(layerMinSecCtx, (now.getSeconds()) * 6, radius * 0.8, 0, color_SecondHand, style_SecondHand) };
+          ctx.drawImage(canvasHourEl, 0, 0, layerHourCtx.width, layerHourCtx.height);
+          ctx.drawImage(canvasMinSecEl, 0, 0, layerMinSecCtx.width, layerMinSecCtx.height);
         }
         catch (err) {
-          ctx.font = '20px Sans-Serif';
-          ctx.textAlign = "left";
-          ctx.fillStyle = 'red';
-          var message = err.message;
-          var words = message.split(' ');
-          var line = '';
-          var maxWidth = canvas.width - 20;
-          var lineHeight = 24;
-          //var x = maxWidth;
-          var x = maxWidth / 2;
-          var y = -60;
-
-          for (var n = 0; n < words.length; n++) {
-            var testLine = line + words[n] + ' ';
-            var metrics = ctx.measureText(testLine);
-            var testWidth = metrics.width;
-            if (testWidth > maxWidth && n > 0) {
-              ctx.fillText(line, -x, y);
-              line = words[n] + ' ';
-              y += lineHeight;
-            }
-            else {
-              line = testLine;
-            }
-          }
-          ctx.fillText(line, -x, y);
-          ctx.stroke();
-          ctx.textAlign = "center";
+          showerror(err, ctx, radius)
         }
       }
 
@@ -104,13 +111,17 @@ class AnalogClock extends HTMLElement {
         var num;
         ctx.lineWidth = 2;
         ctx.strokeStyle = color;
-        for (num = 1; num < 13; num++) {
-          ang = num * Math.PI / 6;
-          ctx.moveTo(Math.cos(ang) * radius, Math.sin(ang) * radius);
-          ctx.lineTo(Math.cos(ang) * radius * 0.9, Math.sin(ang) * radius * 0.9);
-          ctx.stroke();
+        // Major ticke
+        if (!hide_MajorTicks) {
+          for (num = 1; num < 13; num++) {
+            ang = num * Math.PI / 6;
+            ctx.moveTo(Math.cos(ang) * radius, Math.sin(ang) * radius);
+            ctx.lineTo(Math.cos(ang) * radius * 0.9, Math.sin(ang) * radius * 0.9);
+            ctx.stroke();
+          }
         }
         ctx.lineWidth = 1;
+        // Minor ticks
         if (!hide_MinorTicks) {
           for (num = 1; num < 60; num++) {
             ang = num * Math.PI / 30;
@@ -134,7 +145,7 @@ class AnalogClock extends HTMLElement {
         }
       }
 
-      function drawHand(ctx, ang, length, width, color, style) {
+      function drawHand(ctx, ang, length, width, color, style, canvasHand) {
         // Omvandla ang till radianer
         var angrad = (ang - 90) * Math.PI / 180;
         width = width > 0 ? width : 1;
@@ -268,8 +279,13 @@ class AnalogClock extends HTMLElement {
         var options = { hour: '2-digit', minute: '2-digit' };
         var timeString = now.toLocaleTimeString(locale, options);
         if (timeFormat) {
-          var nowmoment = moment(now);
-          timeString = nowmoment.format(timeFormat);
+          try {
+            var nowmoment = moment(now);
+            timeString = nowmoment.format(timeFormat);
+          }
+          catch (err) {
+            showerror(err, ctx, radius)
+          }
         }
         if (timeString.length > 5) {
           ctx.font = Math.round(radius / 5) + 'px Sans-Serif';
@@ -288,8 +304,13 @@ class AnalogClock extends HTMLElement {
           //"20111010T1020"
           var datestring = now.toLocaleString('sv-SE');
           //var datestring = '2021-01-10 10:08';
-          var nowmoment = moment(datestring);
-          ctx.fillText(nowmoment.format(dateFormat), 0, radius * 0.5);
+          try {
+            var nowmoment = moment(datestring);
+            ctx.fillText(nowmoment.format(dateFormat), 0, radius * 0.5);
+          }
+          catch (err) {
+            showerror(err, ctx, radius)
+          }
         } else {
           ctx.fillText(now.toLocaleDateString(locale), 0, radius * 0.5);
         }
@@ -312,44 +333,74 @@ class AnalogClock extends HTMLElement {
         globalThis.color_Background = getComputedStyle(document.documentElement).getPropertyValue('--primary-background-color');
         if (config.color_Background) color_Background = config.color_Background;
         if (config.color_background) color_Background = config.color_background;
+        if (color_Background.startsWith('--')) {
+          color_Background = getComputedStyle(document.documentElement).getPropertyValue(color_Background);
+        }
 
         globalThis.color_Ticks = 'Silver';
         if (config.color_Ticks) color_Ticks = config.color_Ticks;
         if (config.color_ticks) color_Ticks = config.color_ticks;
+        if (color_Ticks.startsWith('--')) {
+          color_Ticks = getComputedStyle(document.documentElement).getPropertyValue(color_Ticks);
+        }
 
         globalThis.hide_MinorTicks = false;
         if (config.hide_minorticks == true) hide_MinorTicks = config.hide_minorticks;
 
+        globalThis.hide_MajorTicks = false;
+        if (config.hide_majorticks == true) hide_MajorTicks = config.hide_majorticks;
+
         globalThis.color_FaceDigits = 'Silver';
         if (config.color_FaceDigits) color_FaceDigits = config.color_FaceDigits;
         if (config.color_facedigits) color_FaceDigits = config.color_facedigits;
+        if (color_FaceDigits.startsWith('--')) {
+          color_FaceDigits = getComputedStyle(document.documentElement).getPropertyValue(color_FaceDigits);
+        }
 
         globalThis.locale = hass.language;
         if (config.locale) locale = config.locale;
 
-        globalThis.color_DigitalTime = '#CCCCCC';
+        globalThis.color_DigitalTime = 'red';
         if (config.color_DigitalTime) color_DigitalTime = config.color_DigitalTime;
         if (config.color_digitaltime) color_DigitalTime = config.color_digitaltime;
+        if (color_DigitalTime.startsWith('--')) {
+          color_DigitalTime = getComputedStyle(document.documentElement).getPropertyValue(color_DigitalTime);
+        }
 
         globalThis.color_HourHand = '#CCCCCC';
         if (config.color_HourHand) color_HourHand = config.color_HourHand;
         if (config.color_hourhand) color_HourHand = config.color_hourhand;
+        if (color_HourHand.startsWith('--')) {
+          color_HourHand = getComputedStyle(document.documentElement).getPropertyValue(color_HourHand);
+        }
 
         globalThis.color_MinuteHand = '#EEEEEE';
         if (config.color_MinuteHand) color_MinuteHand = config.color_MinuteHand;
         if (config.color_minutehand) color_MinuteHand = config.color_minutehand;
+        if (color_MinuteHand.startsWith('--')) {
+          color_MinuteHand = getComputedStyle(document.documentElement).getPropertyValue(color_MinuteHand);
+        }
 
         globalThis.color_SecondHand = 'Silver';
         if (config.color_SecondHand) color_SecondHand = config.color_SecondHand;
         if (config.color_secondhand) color_SecondHand = config.color_secondhand;
+        if (color_SecondHand.startsWith('--')) {
+          color_SecondHand = getComputedStyle(document.documentElement).getPropertyValue(color_SecondHand);
+        }
 
         globalThis.color_Time = 'Silver';
         if (config.color_Time) color_Time = config.color_Time;
         if (config.color_time) color_Time = config.color_time;
+        if (color_Time.startsWith('--')) {
+          color_Time = getComputedStyle(document.documentElement).getPropertyValue(color_Time);
+        }
 
         globalThis.color_Text = 'Silver';
         if (config.color_Text) color_Text = config.color_Text;
         if (config.color_text) color_Text = config.color_text;
+        if (color_Text.startsWith('--')) {
+          color_Text = getComputedStyle(document.documentElement).getPropertyValue(color_Text);
+        }
 
         globalThis.timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
         if (config.timezone) timezone = config.timezone;
@@ -423,6 +474,8 @@ class AnalogClock extends HTMLElement {
                 if (themes[i].color_ticks) { color_Ticks = themes[i].color_ticks };
                 if (themes[i].hide_minorticks == true) { hide_MinorTicks = true };
                 if (themes[i].hide_minorticks == false) { hide_MinorTicks = false };
+                if (themes[i].hide_majorticks == true) { hide_MajorTicks = true };
+                if (themes[i].hide_majorticks == false) { hide_MajorTicks = false };
                 if (themes[i].color_facedigits) { color_FaceDigits = themes[i].color_facedigits };
                 if (themes[i].locale) { locale = themes[i].locale };
                 if (themes[i].color_digitaltime) { color_DigitalTime = themes[i].color_digitaltime };
@@ -454,8 +507,23 @@ class AnalogClock extends HTMLElement {
               }
             }
           } catch (err) {
+            showerror(err, ctx, radius)
           }
         }
+      }
+    }
+
+    function showerror(err, ctx, radius) {
+      console.error("ANALOG-CLOCK Error: " + err.message);
+      if (err.message = 'moment is not defined') {
+        console.info('Have you added moment.js as a resource in Lovelace.yaml?')
+        console.info('Also clear your browser cache, to make moment.js load.')
+        console.info('Find documentation here: https://github.com/tomasrudh/analogclock')
+      }
+      var img = new Image();
+      img.src = 'https://cdn.jsdelivr.net/gh/tomasrudh/analogclock/Images/errorsign.png';
+      img.onload = function (e) {
+        ctx.drawImage(img, -radius, -radius, radius / 4, radius / 4);
       }
     }
   }
@@ -469,4 +537,4 @@ class AnalogClock extends HTMLElement {
   }
 }
 
-customElements.define('analog-clock', AnalogClock);
+customElements.define('analog-clock2', AnalogClock2);
