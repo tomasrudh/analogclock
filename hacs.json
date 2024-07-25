@@ -1,5 +1,6 @@
 {
   "name": "Analog Clock",
+  "description": "An analog clock card for Home Assistant Lovelace",
   "render_readme": true,
   "filename": "analogclock.js"
 }

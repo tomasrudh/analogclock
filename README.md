@@ -15,11 +15,11 @@ You might have to add a character and remove it again, before the Save button be
 
 In addition to the js file is moment.js needed, but only if you plan to use dateformat or timeformat. To install moment.js add these lines in the section 'resources' in ui-lovelace.yaml:
 ```
-  - url: https://unpkg.com/moment@2.29.1/min/moment-with-locales.js
+  - url: https://unpkg.com/moment@2.30.1/min/moment-with-locales.js
     type: js
 ```
 
-If you use the dateformat or timeformat and the hands are not shown, that probably means moment.js is not properly loaded.
+If you use the dateformat or timeformat and date or digital time are not shown, that probably means moment.js is not properly loaded. Refresh the cache in your browser.
 
 ## Configuration
 
@@ -31,12 +31,12 @@ https://momentjs.com/docs/#/displaying/format/
 | Name | Type | Default | Description
 | --- | --- | --- | --- |
 | locale | String | HA setting | Locale for date and week day |
-| timezone | String | Browser setting | Time zone, for example Europe/Stockholm |
+| timezone | String | Browser setting | Time zone, for example Europe/Stockholm [Time zones](https://timezonedb.com/time-zones)|
 | show_timezone | Boolean | false | If true, show time zone instead of week day |
 | timezonedisplayname | String | | Name of the time zone to be shown |
 | diameter | Integer | Automatic | Diameter of the clock |
 | hide_secondhand | Boolean | false | If true, the second hand is hidden |
-| hide_weeknumber | Boolean | true | If true, the week number is hidden NOTE: default has changed to true |
+| hide_weeknumber | Boolean | true | If true, the week number is hidden |
 | hide_weekday | Boolean | false | If true, the week day is hidden |
 | hide_date | Boolean | false | If true, the date is hidden |
 | hide_facedigits | Boolean | false | If true, the hour numbers are hidden |
@@ -44,6 +44,7 @@ https://momentjs.com/docs/#/displaying/format/
 | color_background | String | primary background color | Background color of the clock |
 | color_ticks | String | Silver | Color of the border ticks |
 | hide_minorticks | Boolean | false | Hides the minor ticks |
+| hide_majorticks | Boolean | false | Hides the major ticks and the outer circle |
 | color_facedigits | String | Silver | Color of the borde digits |
 | color_digitaltime | String | #CCCCCC | Color of the digital time |
 | color_hourhand | String | #CCCCCC | Color of the hour hand |
@@ -63,6 +64,16 @@ Themes are settings that are applied during a time interval. Any setting except 
 | themes | | Has subvalues with timed settings |
 | - time | time interval | A time interval in the format HHMM-HHMM, there can be multiple 'time' sections
 | color_background | String | Background color of the clock |
+
+### Colors
+
+All colors can be entered in one of four different ways:
+- "green" The color in plain text. [Available colors](https://www.w3.org/TR/css-color-3/#svg-color)
+- "#3273a8" The first two digits are the level of Red in hex, 00 - FF. The second two Green, and the last two Blue. "#000000" is black, "#FF00FF" is bright pink and "#FFFFFF" is white.
+- rgba(0,0,0,0) The first two number is the level of Red in decimal, 0 - 255. The second Green, the third Blue and the last is alpha. Alpha is in decimal 0 - 1, where 0 is transparent. rgba(0,0,0,1) is black, rgba(255,0,255,1) is bright pink, rgba(0,0,0,1) is white and rgba(0,0,0,0.5) is semi transparent. Note that the value should not be quoted.
+- "--secondary-text-color" Refers to Home Assistant CSS variables.
+
+### Examples
 
 ![Analog clock3](https://github.com/tomasrudh/analogclock/blob/main/Images/AnalogClock3.png?raw=true)
 
@@ -107,3 +118,47 @@ Style 5:
 ![Style 5](https://github.com/tomasrudh/analogclock/blob/main/Images/Style-5.png?raw=true)
 Style 6:
 ![Style 6](https://github.com/tomasrudh/analogclock/blob/main/Images/Style-6.png?raw=true)
+
+## Custom watch face
+
+It is possible to supply your own watch face, you can do that by using a [picture-elements card](https://www.home-assistant.io/dashboards/picture-elements/) and also [card_mod](https://github.com/thomasloven/lovelace-card-mod). The trick is to set the background to transparent, this is done in two places 'rgba(0,0,0,0)'.
+
+![image](https://github.com/tomasrudh/analogclock/blob/main/Images/WatchFaceRoman.png?raw=true)
+
+```
+type: picture-elements
+elements:
+  - type: custom:analog-clock
+    style:
+      left: 50%
+      top: 50%
+    diameter: 200
+    locale: en-US
+    hide_majorticks: true
+    hide_minorticks: true
+    hide_weeknumber: true
+    hide_facedigits: true
+    dateformat: "YYYY-MM-DD"
+    color_background: rgba(0,0,0,0)
+    color_HourHand: "#326ba8"
+    color_MinuteHand: "#3293a8"
+    color_secondhand: red
+    color_DigitalTime: "#CCCCCC"
+    color_FaceDigits: "#a83832"
+    card_mod:
+      style: |
+        ha-card {
+          background: rgba(0,0,0,0);
+        }
+image: /local/images/WatchFaceRoman.png
+```
+
+## Troubleshooting
+
+Should the card run into a problem will an exclamation mark show in the upper left corner.
+
+![image](https://github.com/tomasrudh/analogclock/blob/main/Images/Error.png?raw=true)
+
+Press F12 in your browser and see the error message in the Console tab.
+
+While the exclamation mark show might the card not show properly.
