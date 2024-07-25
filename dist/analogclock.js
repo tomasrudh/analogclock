@@ -1,4 +1,4 @@
-class AnalogClock2 extends HTMLElement {
+class AnalogClock extends HTMLElement {
   set hass(hass) {
     if (!this.content) {
       console.info(`%c ANALOG-CLOCK v2.0 `, 'color: white; font-weight: bold; background: black');
@@ -537,4 +537,4 @@ class AnalogClock2 extends HTMLElement {
   }
 }
 
-customElements.define('analog-clock2', AnalogClock2);
+customElements.define('analog-clock', AnalogClock);
