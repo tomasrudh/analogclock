@@ -79,14 +79,14 @@ All colors can be entered in one of four different ways:
 
 ```
 - type: "custom:analog-clock"
-  hide_SecondHand: true
+  hide_secondHand: true
   locale: sv-SE
   diameter: 200
-  color_HourHand: "#326ba8"
-  color_MinuteHand: "#3273a8"
-  color_DigitalTime: "#CCCCCC"
-  color_FaceDigits: "#a83832"
-  color_Ticks: "Silver"
+  color_hourHand: "#326ba8"
+  color_minuteHand: "#3273a8"
+  color_digitalTime: "#CCCCCC"
+  color_faceDigits: "#a83832"
+  color_ticks: "Silver"
   themes:
   - time: 23:00-08:00
     color_background: maroon
@@ -94,11 +94,11 @@ All colors can be entered in one of four different ways:
 ![Analog clock4](https://github.com/tomasrudh/analogclock/blob/main/Images/AnalogClock4.png?raw=true)
 ```
 - type: "custom:analog-clock"
-  hide_SecondHand: true
-  color_HourHand: "#326ba8"
-  color_MinuteHand: "#3273a8"
-  color_DigitalTime: "#CCCCCC"
-  color_FaceDigits: "#a83832"
+  hide_secondHand: true
+  color_hourHand: "#326ba8"
+  color_minuteHand: "#3273a8"
+  color_digitalTime: "#CCCCCC"
+  color_faceDigits: "#a83832"
   hide_minorticks: true
   timezone: America/Fortaleza
   timezonedisplayname: "UTC-3"
@@ -140,11 +140,11 @@ elements:
     hide_facedigits: true
     dateformat: "YYYY-MM-DD"
     color_background: rgba(0,0,0,0)
-    color_HourHand: "#326ba8"
-    color_MinuteHand: "#3293a8"
+    color_hourHand: "#326ba8"
+    color_minuteHand: "#3293a8"
     color_secondhand: red
-    color_DigitalTime: "#CCCCCC"
-    color_FaceDigits: "#a83832"
+    color_digitalTime: "#CCCCCC"
+    color_faceDigits: "#a83832"
     card_mod:
       style: |
         ha-card {
