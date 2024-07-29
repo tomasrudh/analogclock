@@ -75,7 +75,7 @@ All colors can be entered in one of four different ways:
 
 ```
 - type: "custom:analog-clock"
-  hide_SecondHand: true
+  hide_secondHand: true
   locale: sv-SE
   diameter: 200
   color_hourhand: "#326ba8"
