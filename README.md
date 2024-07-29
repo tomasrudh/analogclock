@@ -3,6 +3,11 @@
 # Lovelace Analog Clock
 An analog clock card for Home Assistant Lovelace. Colors are fully customizable, weekday names and date formats are localizable.
 
+```diff
+- Breaking changes
+Some of the masks for 'dateformat' and 'timeformat' have changed text. Please see Formats for the new masks.
+```
+
 ## Installation
 
 Install using HACS, search for 'Analog Clock'.
@@ -13,18 +18,9 @@ type: "custom:analog-clock"
 ```
 You might have to add a character and remove it again, before the Save button becomes active.
 
-In addition to the js file is moment.js needed, but only if you plan to use dateformat or timeformat. To install moment.js add these lines in the section 'resources' in ui-lovelace.yaml:
-```
-  - url: https://unpkg.com/moment@2.30.1/min/moment-with-locales.js
-    type: js
-```
-
-If you use the dateformat or timeformat and date or digital time are not shown, that probably means moment.js is not properly loaded. Refresh the cache in your browser.
-
 ## Configuration
 
-For a list of available options for dateformat and timeformat, see this:
-https://momentjs.com/docs/#/displaying/format/
+For a list of available options for dateformat and timeformat, see Formats.
 
 ![Analog clock2](https://github.com/tomasrudh/analogclock/blob/main/Images/AnalogClock2.png?raw=true)
 
@@ -54,8 +50,8 @@ https://momentjs.com/docs/#/displaying/format/
 | style_hourhand | Integer | 1 | Style for the hour hand |
 | style_minutehand | Integer | 1 | Style for the minute hand |
 | style_secondhand | Integer | 3 | Style for the second hand |
-| dateformat | String | HA setting | Format for the date (Require moment.js) |
-| timeformat | String | HA setting | Format for the time (Require moment.js) |
+| dateformat | String | HA setting | Format for the date |
+| timeformat | String | HA setting | Format for the time |
 
 Themes are settings that are applied during a time interval. Any setting except timezone and diameter can be set in themes. There can be multiple 'time' sections.
 
@@ -82,10 +78,10 @@ All colors can be entered in one of four different ways:
   hide_secondHand: true
   locale: sv-SE
   diameter: 200
-  color_hourHand: "#326ba8"
-  color_minuteHand: "#3273a8"
-  color_digitalTime: "#CCCCCC"
-  color_faceDigits: "#a83832"
+  color_hourhand: "#326ba8"
+  color_minutehand: "#3273a8"
+  color_digitaltime: "#CCCCCC"
+  color_facedigits: "#a83832"
   color_ticks: "Silver"
   themes:
   - time: 23:00-08:00
@@ -94,11 +90,11 @@ All colors can be entered in one of four different ways:
 ![Analog clock4](https://github.com/tomasrudh/analogclock/blob/main/Images/AnalogClock4.png?raw=true)
 ```
 - type: "custom:analog-clock"
-  hide_secondHand: true
-  color_hourHand: "#326ba8"
-  color_minuteHand: "#3273a8"
-  color_digitalTime: "#CCCCCC"
-  color_faceDigits: "#a83832"
+  hide_secondhand: true
+  color_hourhand: "#326ba8"
+  color_minutehand: "#3273a8"
+  color_digitaltime: "#CCCCCC"
+  color_facedigits: "#a83832"
   hide_minorticks: true
   timezone: America/Fortaleza
   timezonedisplayname: "UTC-3"
@@ -140,11 +136,11 @@ elements:
     hide_facedigits: true
     dateformat: "YYYY-MM-DD"
     color_background: rgba(0,0,0,0)
-    color_hourHand: "#326ba8"
-    color_minuteHand: "#3293a8"
+    color_hourhand: "#326ba8"
+    color_minutehand: "#3293a8"
     color_secondhand: red
-    color_digitalTime: "#CCCCCC"
-    color_faceDigits: "#a83832"
+    color_digitaltime: "#CCCCCC"
+    color_facedigits: "#a83832"
     card_mod:
       style: |
         ha-card {
