@@ -9,6 +9,8 @@ Some of the masks for 'dateformat' and 'timeformat' have changed text. Please se
 ```
 [Formats](https://github.com/tomasrudh/analogclock/blob/3.0/Formats.md)
 
+[Formats](https://github.com/tomasrudh/analogclock/blob/3.0/Formats.md)
+
 ## Installation
 
 Install using HACS, search for 'Analog Clock'.
