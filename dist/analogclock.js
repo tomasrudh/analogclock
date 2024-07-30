@@ -6,7 +6,7 @@ class AnalogClock extends HTMLElement {
     };
 
     if (!this.content) {
-      console.info(`%c ANALOG-CLOCK v3.0 `, 'color: white; font-weight: bold; background: black');
+      console.info(`%c ANALOG-CLOCK v3.2 `, 'color: white; font-weight: bold; background: black');
       var config = this.config;
       const card = document.createElement('ha-card');
       this.content = document.createElement('div');
@@ -44,6 +44,34 @@ class AnalogClock extends HTMLElement {
       layerMinSecCtx.textAlign = "center";
       layerMinSecCtx.textBaseline = 'middle';
       layerMinSecCtx.translate(canvas.width / 2, canvas.height / 2);
+
+      var color_Background = getComputedStyle(document.documentElement).getPropertyValue('--primary-background-color');
+      var color_Ticks = 'Silver';
+      var hide_MinorTicks = false;
+      var hide_MajorTicks = false;
+      var color_FaceDigits = 'Silver';
+      var locale = hass.language;
+      var color_DigitalTime = 'red';
+      var color_HourHand = '#CCCCCC';
+      var color_MinuteHand = '#EEEEEE';
+      var color_SecondHand = 'Silver';
+      var color_Time = 'Silver';
+      var color_Text = 'Silver';
+      var timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      var timezonedisplayname = "";
+      var showtimezone = false;
+      var hide_WeekNumber = true;
+      var hide_FaceDigits = false;
+      var hide_Date = false;
+      var hide_WeekDay = false;
+      var hide_DigitalTime = false;
+      var hide_SecondHand = false;
+      var style_HourHand = 1;
+      var style_MinuteHand = 1;
+      var style_SecondHand = 3;
+      var dateMask = "";
+      var timeFormat = "";
+      var demo = false;
 
       var layerCachedForMinute = -1;
       getConfig();
@@ -456,128 +484,101 @@ class AnalogClock extends HTMLElement {
       }
 
       function getConfig() {
-        globalThis.color_Background = getComputedStyle(document.documentElement).getPropertyValue('--primary-background-color');
         if (config.color_Background) color_Background = config.color_Background;
         if (config.color_background) color_Background = config.color_background;
         if (color_Background.startsWith('--')) {
           color_Background = getComputedStyle(document.documentElement).getPropertyValue(color_Background);
         }
 
-        globalThis.color_Ticks = 'Silver';
         if (config.color_Ticks) color_Ticks = config.color_Ticks;
         if (config.color_ticks) color_Ticks = config.color_ticks;
         if (color_Ticks.startsWith('--')) {
           color_Ticks = getComputedStyle(document.documentElement).getPropertyValue(color_Ticks);
         }
 
-        globalThis.hide_MinorTicks = false;
         if (config.hide_minorticks == true) hide_MinorTicks = config.hide_minorticks;
 
-        globalThis.hide_MajorTicks = false;
         if (config.hide_majorticks == true) hide_MajorTicks = config.hide_majorticks;
 
-        globalThis.color_FaceDigits = 'Silver';
         if (config.color_FaceDigits) color_FaceDigits = config.color_FaceDigits;
         if (config.color_facedigits) color_FaceDigits = config.color_facedigits;
         if (color_FaceDigits.startsWith('--')) {
           color_FaceDigits = getComputedStyle(document.documentElement).getPropertyValue(color_FaceDigits);
         }
 
-        globalThis.locale = hass.language;
         if (config.locale) locale = config.locale;
 
-        globalThis.color_DigitalTime = 'red';
         if (config.color_DigitalTime) color_DigitalTime = config.color_DigitalTime;
         if (config.color_digitaltime) color_DigitalTime = config.color_digitaltime;
         if (color_DigitalTime.startsWith('--')) {
           color_DigitalTime = getComputedStyle(document.documentElement).getPropertyValue(color_DigitalTime);
         }
 
-        globalThis.color_HourHand = '#CCCCCC';
         if (config.color_HourHand) color_HourHand = config.color_HourHand;
         if (config.color_hourhand) color_HourHand = config.color_hourhand;
         if (color_HourHand.startsWith('--')) {
           color_HourHand = getComputedStyle(document.documentElement).getPropertyValue(color_HourHand);
         }
 
-        globalThis.color_MinuteHand = '#EEEEEE';
         if (config.color_MinuteHand) color_MinuteHand = config.color_MinuteHand;
         if (config.color_minutehand) color_MinuteHand = config.color_minutehand;
         if (color_MinuteHand.startsWith('--')) {
           color_MinuteHand = getComputedStyle(document.documentElement).getPropertyValue(color_MinuteHand);
         }
 
-        globalThis.color_SecondHand = 'Silver';
         if (config.color_SecondHand) color_SecondHand = config.color_SecondHand;
         if (config.color_secondhand) color_SecondHand = config.color_secondhand;
         if (color_SecondHand.startsWith('--')) {
           color_SecondHand = getComputedStyle(document.documentElement).getPropertyValue(color_SecondHand);
         }
 
-        globalThis.color_Time = 'Silver';
         if (config.color_Time) color_Time = config.color_Time;
         if (config.color_time) color_Time = config.color_time;
         if (color_Time.startsWith('--')) {
           color_Time = getComputedStyle(document.documentElement).getPropertyValue(color_Time);
         }
 
-        globalThis.color_Text = 'Silver';
         if (config.color_Text) color_Text = config.color_Text;
         if (config.color_text) color_Text = config.color_text;
         if (color_Text.startsWith('--')) {
           color_Text = getComputedStyle(document.documentElement).getPropertyValue(color_Text);
         }
 
-        globalThis.timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
         if (config.timezone) timezone = config.timezone;
 
-        globalThis.timezonedisplayname = "";
         if (config.timezonedisplayname) timezonedisplayname = config.timezonedisplayname;
 
-        globalThis.showtimezone = false;
         if (config.showtimezone == true) showtimezone = true;
         if (config.show_timezone == true) showtimezone = true;
 
-        globalThis.hide_WeekNumber = true;
         if (config.hide_WeekNumber == false) hide_WeekNumber = false;
         if (config.hide_weeknumber == false) hide_WeekNumber = false;
 
-        globalThis.hide_FaceDigits = false;
         if (config.hide_FaceDigits == true) hide_FaceDigits = true;
         if (config.hide_facedigits == true) hide_FaceDigits = true;
 
-        globalThis.hide_Date = false;
         if (config.hide_Date == true) hide_Date = true;
         if (config.hide_date == true) hide_Date = true;
 
-        globalThis.hide_WeekDay = false;
         if (config.hide_WeekDay == true) hide_WeekDay = true;
         if (config.hide_weekday == true) hide_WeekDay = true;
 
-        globalThis.hide_DigitalTime = false;
         if (config.hide_DigitalTime == true) hide_DigitalTime = true;
         if (config.hide_digitaltime == true) hide_DigitalTime = true;
 
-        globalThis.hide_SecondHand = false;
         if (config.hide_SecondHand == true) hide_SecondHand = true;
         if (config.hide_secondhand == true) hide_SecondHand = true;
 
-        globalThis.style_HourHand = 1;
         if (config.style_hourhand) style_HourHand = config.style_hourhand;
 
-        globalThis.style_MinuteHand = 1;
         if (config.style_minutehand) style_MinuteHand = config.style_minutehand;
 
-        globalThis.style_SecondHand = 3;
         if (config.style_secondhand) style_SecondHand = config.style_secondhand;
 
-        globalThis.dateMask = "";
         if (config.dateformat) dateMask = config.dateformat;
 
-        globalThis.timeFormat = "";
         if (config.timeformat) timeFormat = config.timeformat;
 
-        globalThis.demo = false;
         if (config.demo == true) demo = true;
 
         var themes = config.themes;
