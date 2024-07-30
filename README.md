@@ -21,7 +21,7 @@ You might have to add a character and remove it again, before the Save button be
 
 ## Configuration
 
-For a list of available options for dateformat and timeformat, see Formats.
+For a list of available options for dateformat and timeformat, see [Formats](https://github.com/tomasrudh/analogclock/blob/3.0/Formats.md).
 
 ![Analog clock2](https://github.com/tomasrudh/analogclock/blob/main/Images/AnalogClock2.png?raw=true)
 
