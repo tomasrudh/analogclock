@@ -21,15 +21,15 @@ The code for formatting dates and times are borrowed from https://blog.stevenlev
 | s | Seconds; no leading zero for single-digit seconds. |
 | ss | Seconds; leading zero for single-digit seconds. |
 | l or L | Milliseconds. l gives 3 digits. L gives 2 digits. |
-| t | Lowercase, single-character time marker string: a or p. No equivalent in CF. |
-| tt | Lowercase, two-character time marker string: am or pm. No equivalent in CF. |
+| t | Lowercase, single-character time marker string: a or p. |
+| tt | Lowercase, two-character time marker string: am or pm. |
 | T | Uppercase, single-character time marker string: A or P. Uppercase T unlike CF's t to allow for user-specified casing. |
 | TT | Uppercase, two-character time marker string: AM or PM. Uppercase TT unlike CF's tt to allow for user-specified casing. |
-| Z | US timezone abbreviation, e.g. EST or MDT. With non-US timezones or in the Opera browser, the GMT/UTC offset is returned, e.g. GMT-0500. No equivalent in CF. |
-| o | GMT/UTC timezone offset, e.g. -0500 or +0230. No equivalent in CF. |
-| S | The date's ordinal suffix (st, nd, rd, or th). Works well with d. No equivalent in CF. |
-| '…' or "…" | Literal character sequence. Surrounding quotes are removed. No equivalent in CF. |
-| UTC: | Must be the first four characters of the mask. Converts the date from local time to UTC/GMT/Zulu time before applying the mask. The "UTC:" prefix is removed. No equivalent in CF. |
+| Z | US timezone abbreviation, e.g. EST or MDT. With non-US timezones or in the Opera browser, the GMT/UTC offset is returned, e.g. GMT-0500. |
+| o | GMT/UTC timezone offset, e.g. -0500 or +0230. |
+| S | The date's ordinal suffix (st, nd, rd, or th). Works well with d. |
+| '…' or "…" | Literal character sequence. Surrounding quotes are removed. |
+| UTC: | Must be the first four characters of the mask. Converts the date from local time to UTC/GMT/Zulu time before applying the mask. The "UTC:" prefix is removed. |
 
 There are some predefined masks
 
