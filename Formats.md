@@ -16,15 +16,15 @@ The code for formatting dates and times are borrowed from https://blog.stevenlev
  |hh | Hours; leading zero for single-digit hours (12-hour clock). |
 | H | Hours; no leading zero for single-digit hours (24-hour clock). |
 | HH | Hours; leading zero for single-digit hours (24-hour clock). |
-| M | Minutes; no leading zero for single-digit minutes. Uppercase M unlike CF timeFormat's m to avoid conflict with months. |
-| MM | Minutes; leading zero for single-digit minutes. Uppercase MM unlike CF timeFormat's mm to avoid conflict with months. |
+| M | Minutes; no leading zero for single-digit minutes. |
+| MM | Minutes; leading zero for single-digit minutes. |
 | s | Seconds; no leading zero for single-digit seconds. |
 | ss | Seconds; leading zero for single-digit seconds. |
 | l or L | Milliseconds. l gives 3 digits. L gives 2 digits. |
 | t | Lowercase, single-character time marker string: a or p. |
 | tt | Lowercase, two-character time marker string: am or pm. |
-| T | Uppercase, single-character time marker string: A or P. Uppercase T unlike CF's t to allow for user-specified casing. |
-| TT | Uppercase, two-character time marker string: AM or PM. Uppercase TT unlike CF's tt to allow for user-specified casing. |
+| T | Uppercase, single-character time marker string: A or P. |
+| TT | Uppercase, two-character time marker string: AM or PM. |
 | Z | US timezone abbreviation, e.g. EST or MDT. With non-US timezones or in the Opera browser, the GMT/UTC offset is returned, e.g. GMT-0500. |
 | o | GMT/UTC timezone offset, e.g. -0500 or +0230. |
 | S | The date's ordinal suffix (st, nd, rd, or th). Works well with d. |
