@@ -137,7 +137,7 @@ elements:
     hide_minorticks: true
     hide_weeknumber: true
     hide_facedigits: true
-    dateformat: "YYYY-MM-DD"
+    dateformat: "yyyy-mm-dd"
     color_background: rgba(0,0,0,0)
     color_hourhand: "#326ba8"
     color_minutehand: "#3293a8"
