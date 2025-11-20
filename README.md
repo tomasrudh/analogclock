@@ -9,8 +9,6 @@ Some of the formats for 'dateformat' and 'timeformat' have changed text. Please 
 ```
 [Formats](https://github.com/tomasrudh/analogclock/blob/3.0/Formats.md)
 
-[Formats](https://github.com/tomasrudh/analogclock/blob/3.0/Formats.md)
-
 ## Installation
 
 Install using HACS, search for 'Analog Clock'.
@@ -137,7 +135,7 @@ elements:
     hide_minorticks: true
     hide_weeknumber: true
     hide_facedigits: true
-    dateformat: "YYYY-MM-DD"
+    dateformat: "yyyy-mm-dd"
     color_background: rgba(0,0,0,0)
     color_hourhand: "#326ba8"
     color_minutehand: "#3293a8"
