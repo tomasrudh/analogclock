@@ -90,7 +90,8 @@ All colors can be entered in one of four different ways:
   - time: 23:00-08:00
     color_background: maroon
 ```
-![Analog clock4](https://github.com/tomasrudh/analogclock/blob/main/Images/AnalogClock4.png?raw=true)
+<img width="228" height="206" alt="image" src="https://github.com/user-attachments/assets/1b304c4d-67c6-44ea-857f-af21c28e9e1e" />
+
 ```
 - type: "custom:analog-clock"
   hide_secondhand: true
@@ -98,10 +99,11 @@ All colors can be entered in one of four different ways:
   color_minutehand: "#3273a8"
   color_digitaltime: "#CCCCCC"
   color_facedigits: "#a83832"
+  hide_facedigits: true
   hide_minorticks: true
   timezone: America/Fortaleza
   timezonedisplayname: "UTC-3"
-  dateformat: "dd-mm-yyyy"
+  dateformat: "mmm d yyyy"
   timeformat: "HH MM"
 ```
 
