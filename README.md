@@ -101,8 +101,8 @@ All colors can be entered in one of four different ways:
   hide_minorticks: true
   timezone: America/Fortaleza
   timezonedisplayname: "UTC-3"
-  dateformat: "DD-MM-YYYY"
-  timeformat: "hh mm"
+  dateformat: "dd-mm-yyyy"
+  timeformat: "HH MM"
 ```
 
 Style 1:
