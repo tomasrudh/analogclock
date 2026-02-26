@@ -90,7 +90,8 @@ All colors can be entered in one of four different ways:
   - time: 23:00-08:00
     color_background: maroon
 ```
-<img width="228" height="206" alt="image" src="https://github.com/user-attachments/assets/1b304c4d-67c6-44ea-857f-af21c28e9e1e" />
+<img width="231" height="208" alt="image" src="https://github.com/user-attachments/assets/53989dfe-9d8f-4aa3-84fa-e1e29f56b7ea" />
+
 
 ```
 - type: "custom:analog-clock"
