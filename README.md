@@ -40,7 +40,7 @@ For a list of available options for dateformat and timeformat, see [Formats](htt
 | hide_date | Boolean | false | If true, the date is hidden |
 | hide_facedigits | Boolean | false | If true, the hour numbers are hidden |
 | hide_digitaltime | Boolean | false | If true, the digital time hidden |
-| color_background | String | primary background color | Background color of the clock |
+| color_background | String | transparent | Background color of the clock |
 | color_ticks | String | Silver | Color of the border ticks |
 | hide_minorticks | Boolean | false | Hides the minor ticks |
 | hide_majorticks | Boolean | false | Hides the major ticks and the outer circle |
