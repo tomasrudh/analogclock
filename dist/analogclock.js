@@ -5,10 +5,7 @@ class AnalogClock extends HTMLElement {
 
     if (this.content) return; // build once
 
-    console.info(
-      "%c ANALOG-CLOCK v3.10 ",
-      "color: white; font-weight: bold; background: black"
-    );
+    console.info("%c ANALOG-CLOCK v3.3 ", "color: white; font-weight: bold; background: black");
 
     const host = this;
     const config = this.config || {};
@@ -145,10 +142,7 @@ class AnalogClock extends HTMLElement {
     }
 
     // --- config & drawing state ---
-    let color_Background =
-      getComputedStyle(document.documentElement).getPropertyValue(
-        "--primary-background-color"
-      ) || "#000";
+    let color_Background = "rgba(0, 0, 0, 0)";
     let color_Ticks = "Silver";
     let hide_MinorTicks = false;
     let hide_MajorTicks = false;
@@ -817,4 +811,5 @@ function getConfig() {
 if (!customElements.get("analog-clock")) {
   customElements.define("analog-clock", AnalogClock);
 }
+
 
