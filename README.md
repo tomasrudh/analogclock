@@ -13,7 +13,7 @@ Some of the formats for 'dateformat' and 'timeformat' have changed text. Please 
 
 ## Installation
 
-Install using HACS, search for 'Analog Clock'.
+Install using Marketplace (Former HACS), search for 'Analog Clock'.
 
 To add the card in GUI mode, click +Add Card, scroll down to the bottom and press Manual. Delete the text already in the code panel and add this:
 ```
